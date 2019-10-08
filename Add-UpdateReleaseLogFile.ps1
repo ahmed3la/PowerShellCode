@@ -14,4 +14,4 @@ if (!(Test-Path -Path $releaseLogFilePath))
     Write-Host "Add the release log file [ $releaseLogFilePath] Successfully" -ForegroundColor Blue
     #------------------
 }
-Set-Content $releaseLogFilePath $releaseName
+Add-Content $releaseLogFilePath $releaseName
