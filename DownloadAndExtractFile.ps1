@@ -16,7 +16,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Download
 {
     param([string]$url, [string]$destnation)
-
+    Write-Host "This task will downloaded : "$url ":==>" $destnation
     Invoke-WebRequest $url -OutFile $destnation 
     Write-Host "The file has downloaded successfully"
 }
@@ -24,35 +24,48 @@ function Download
 function Unzip
 {
     param([string]$zipfile, [string]$outpath)
-
+    Write-Host "This task will extracting " $zipfile ":==>" $outpath
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
     Write-Host "The file has extracted successfully"
 }
 
-function getFileName
+function getFileNameWithEx
 {
     param([string] $filePath)
-    $splitPath = $filePath.Split("\")
+    $splitPath = $filePath.Split("/")
      
     if($splitPath.Length -gt 0)
     { 
-        $name=$splitPath[$splitPath.Length-1].Split(".")
-        if($name -gt 0)
-        {
-             return $name[0]
-        }
+        $name=$splitPath[$splitPath.Length-1] 
+        return $name
+        
     } 
 }
 
-$fileName= getFileName($DownloadToPath)
-Write-Host $ExtractToPath"\"$fileName
+function getFileName
+{
+    param([string] $fullName)
+
+    $splitName = $fullName.Split(".")
+     
+    if($splitName.Length -gt 0)
+    {  
+        return $splitName[0]
+    } 
+}
+
+$fileNameWithEx=getFileNameWithEx($Url_Zip)
+$fileName= getFileName($fileNameWithEx)
+
+
 
 if(!(Test-Path -Path $ExtractToPath"\"$fileName))
 {
-    Download $Url_Zip $DownloadToPath
-    Unzip $DownloadToPath $ExtractToPath
+    Download $Url_Zip $DownloadToPath$fileNameWithEx
+    Unzip $DownloadToPath$fileNameWithEx $ExtractToPath
 }
 else
 {
-    Write-Host "The file already exists!"$ExtractToPath
+    Write-Host $ExtractToPath$fileName
+    Write-Host "The file already exists!" $fileName
 }
