@@ -13,9 +13,10 @@
 $filePath = "$logFolderPath\$logFileName"
 $fileName,$extensionTypes = $filePath.split('.')
 
-if (!(Test-Path -Path $filePath ))
+if (!(Test-Path -Path $logFolderPath ))
 {
     New-Item $logFolderPath -ItemType Directory
+    Write-Host "Add log Directory [ $logFolderPath ] Successfully"
 }
 if (!(Test-Path -Path $filePath ))
 {
