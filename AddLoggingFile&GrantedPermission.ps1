@@ -23,14 +23,17 @@ if (!(Test-Path -Path $filePath ))
     New-Item $filePath -ItemType File
     Set-Content $filePath 'This file add with TFS'
     Write-Host "Add log file [ $filePath ] Successfully"
+    #------------------
+   
 }
 else 
-{ 
+{
+    Write-Host "is beginning get a backup of the file " $filePath
+    
     $Date=Get-Date
     $DateStr = '{0:yyyyMMdd_HH-mm}' -f ($Date)
     
     $destination  = "$fileName$DateStr.$extensionTypes"  
-	Write-Host "is beginning get a backup of the file " $destination
     Copy-Item $filePath  $destination
     Write-Host "The Backup has finished successfully " $filePath    
     
@@ -49,7 +52,7 @@ else
     $acl.AddAccessRule($rule)
     Set-Acl $logFolderPath $acl
 
-    Write-Host "Add access control at $logFolderPath successfully"
+    Write-Host "Add access control at $filePath successfully"
 
  # Add access control at log file
     
